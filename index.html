@@ -612,7 +612,13 @@ function editReceita(id){const r=db.receitas.find(x=>x.id===id);if(!r)return;doc
 function delReceita(id){if(!confirm('Remover?'))return;db.receitas=db.receitas.filter(r=>r.id!==id);saveDB();render();}
 function autoValLote(){const p=db.produtos.find(x=>x.id===document.getElementById('lProd').value);const dp=document.getElementById('lDataP').value||today();if(p&&p.validade){const v=new Date(dp+'T00:00:00');v.setDate(v.getDate()+p.validade);document.getElementById('lDataV').value=v.toISOString().slice(0,10);}}
 function salvarLote(){const pid=document.getElementById('lProd').value;if(!pid)return alert('Selecione o produto.');const qtd=+document.getElementById('lQtd').value;if(!qtd)return alert('Informe a quantidade.');const p=db.produtos.find(x=>x.id===pid);const obj={id:gId(),produtoId:pid,produtoNome:p?.nome||'?',categoria:p?.categoria||'outro',qtdProduzida:qtd,qtdDisponivel:qtd,dataProd:document.getElementById('lDataP').value,dataVal:document.getElementById('lDataV').value,obs:document.getElementById('lObs').value.trim()};db.lotes.push(obj);saveDB();closeM('mLote');render();}
-function delLote(id){if(!confirm('Remover lote?'))return;db.lotes=db.lotes.filter(l=>l.id!==id);saveDB();render();}
+function delLote(id){
+  const lote=db.lotes.find(l=>l.id===id);
+  const msg=lote?`Remover lote de ${lote.produtoNome} (${lote.qtdDisponivel} unid disponíveis)? O estoque será atualizado automaticamente.`:'Remover lote?';
+  if(!confirm(msg))return;
+  db.lotes=db.lotes.filter(l=>l.id!==id);
+  saveDB();render();
+}
 function filtrarLotesPorProd(){
   const pid=document.getElementById('eProd')?.value||'';
   const s=document.getElementById('eLote');if(!s)return;
