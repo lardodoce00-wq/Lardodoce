@@ -535,8 +535,14 @@ const tipoLabel={compra:'🛒 Compra',embalagem:'📦 Embalagem',perda:'🗑️ 
 const tipoCss={compra:'tipo-compra',embalagem:'tipo-embalagem',perda:'tipo-perda',prejuizo:'tipo-prejuizo',outro:'tipo-outro'};
 // Helper: disponível de um produto direto dos lotes (fonte da verdade)
 function dispProd(pid){return db.lotes.filter(l=>l.produtoId===pid).reduce((s,l)=>s+(l.qtdDisponivel||0),0);}
-function calcKitMax(kitId){const comp=KIT_COMP[kitId];if(!comp)return 999;let max=9999;for(const item of comp){if(item.type==='fixed'){max=Math.min(max,Math.floor(dispProd(item.id)/item.qtd));}else{const tot=item.grupo.reduce((s,id)=>s+dispProd(id),0);max=Math.min(max,Math.floor(tot/item.qtd));}}return max===9999?0:max;}
-function calcKitFalta(kitId,qtdKits){const comp=KIT_COMP[kitId];if(!comp)return[];const falta=[];for(const item of comp){if(item.type==='fixed'){const d=dispProd(item.id);const n=item.qtd*qtdKits;if(d<n)falta.push({label:item.label,tem:d,precisa:n});}else{const tot=item.grupo.reduce((s,id)=>s+dispProd(id),0);const n=item.qtd*qtdKits;if(tot<n)falta.push({label:item.label,tem:tot,precisa:n});}}return falta;}
+function calcKitMax(kitId){const comp=KIT_COMP[kitId];if(!comp)return 999;let max=9999;for(const item of comp){if(item.type==='fixed'){
+    if(item.id==='p17')continue; // caixinha é virtual
+    max=Math.min(max,Math.floor(dispProd(item.id)/item.qtd));
+  }else{const tot=item.grupo.reduce((s,id)=>s+dispProd(id),0);max=Math.min(max,Math.floor(tot/item.qtd));}}return max===9999?0:max;}
+function calcKitFalta(kitId,qtdKits){const comp=KIT_COMP[kitId];if(!comp)return[];const falta=[];for(const item of comp){if(item.type==='fixed'){
+    if(item.id==='p17')continue; // caixinha é virtual, não verifica estoque
+    const d=dispProd(item.id);const n=item.qtd*qtdKits;if(d<n)falta.push({label:item.label,tem:d,precisa:n});
+  }else{const tot=item.grupo.reduce((s,id)=>s+dispProd(id),0);const n=item.qtd*qtdKits;if(tot<n)falta.push({label:item.label,tem:tot,precisa:n});}}return falta;}
 function calcDisponivelReal(pid){
   const p=db.produtos.find(x=>x.id===pid);
   if(!p||p.categoria==='kit')return 0;
@@ -728,12 +734,29 @@ function renderVendaItens(){
         <div style="font-size:.7rem;font-weight:700;color:var(--gold-l);margin-bottom:6px">🎁 Componentes:</div>`;
       KIT_COMP[item.prodId].forEach((c,ci)=>{
         if(c.type==='fixed'){
-          const cp=db.produtos.find(x=>x.id===c.id);
-          const disp=dispProd(c.id);
-          h+=`<div style="font-size:.74rem;color:var(--soft);padding:3px 0;border-bottom:1px solid var(--bord)">
-            ✓ ${c.label}: <b style="color:var(--cream)">${c.qtd}× ${cp?.nome||'?'}</b>
-            <span style="color:${disp>=c.qtd?'#7ABFA0':'#E07060'}"> (${disp} disp.)</span>
-          </div>`;
+          // Se o componente fixo é a Caixinha (p17), abre seletores de sabor
+          if(c.id==='p17'){
+            h+=`<div style="padding:6px 0;border-bottom:1px solid var(--bord)">
+              <div style="font-size:.72rem;font-weight:700;color:var(--gold-l);margin-bottom:4px">🍬 Caixinha — escolha os 4 sabores:</div>`;
+            for(let s=0;s<4;s++){
+              const key='caixa_'+ci+'_'+s;const cur=item.kitSel[key]||'';
+              let sopts=`<option value="">Sabor ${s+1}...</option>`;
+              db.produtos.filter(dp=>dp.categoria==='brigadeiro'&&dp.id!=='p17').forEach(dp=>{
+                const disp=dispProd(dp.id);
+                sopts+=`<option value="${dp.id}" ${dp.id===cur?'selected':''}>${dp.nome.replace('Docinho ','')} (${disp} disp.)</option>`;
+              });
+              h+=`<div style="margin-top:4px"><label style="font-size:.65rem;margin-top:0">Docinho ${s+1}</label>
+                <select onchange="onKitSel(${idx},'${key}',this.value)" style="font-size:.8rem">${sopts}</select></div>`;
+            }
+            h+=`</div>`;
+          } else {
+            const cp=db.produtos.find(x=>x.id===c.id);
+            const disp=dispProd(c.id);
+            h+=`<div style="font-size:.74rem;color:var(--soft);padding:3px 0;border-bottom:1px solid var(--bord)">
+              ✓ ${c.label}: <b style="color:var(--cream)">${c.qtd}× ${cp?.nome||'?'}</b>
+              <span style="color:${disp>=c.qtd?'#7ABFA0':'#E07060'}"> (${disp} disp.)</span>
+            </div>`;
+          }
         } else {
           for(let s=0;s<c.qtd;s++){
             const key=`${ci}_${s}`;
@@ -839,10 +862,20 @@ function registrarVenda(){
 
     if(p?.categoria==='kit'&&KIT_COMP[item.prodId]){
       const falta=calcKitFalta(item.prodId,qtd);
-      if(falta.length)return alert('Kit '+p.nome+': falta '+falta.map(f=>f.label+' ('+f.precisa+' needed)').join(', '));
+      if(falta.length)return alert('Kit '+p.nome+': falta '+falta.map(f=>f.label).join(', '));
       KIT_COMP[item.prodId].forEach((c,ci)=>{
-        if(c.type==='fixed'){abateLotemaisAntigo(c.id,c.qtd*qtd);}
-        else{
+        if(c.type==='fixed'){
+          // Se é caixinha: abate os docinhos individuais selecionados
+          if(c.id==='p17'){
+            for(let s=0;s<4;s++){
+              const key='caixa_'+ci+'_'+s;
+              const did=item.kitSel[key];
+              if(did)abateLotemaisAntigo(did,qtd);
+            }
+          } else {
+            abateLotemaisAntigo(c.id,c.qtd*qtd);
+          }
+        } else {
           for(let s=0;s<c.qtd;s++){
             const pid=item.kitSel[`${ci}_${s}`]||(c.grupo.find(id=>dispProd(id)>0)||c.grupo[0]);
             if(pid)abateLotemaisAntigo(pid,qtd);
