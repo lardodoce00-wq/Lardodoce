@@ -172,7 +172,7 @@ select option{background:var(--surf2)}
 </style>
 </head>
 <body>
-<div class="header"><div class="hrow"><div class="brand"><div class="brand-ic">🍮</div><div><h1>Lar do Doce</h1><p>Gestão artesanal · v11</p></div></div><div class="sync ing" id="syncBadge">⟳ Conectando</div></div></div>
+<div class="header"><div class="hrow"><div class="brand"><div class="brand-ic">🍮</div><div><h1>Lar do Doce</h1><p>Gestão artesanal · v12</p></div></div><div class="sync ing" id="syncBadge">⟳ Conectando</div></div></div>
 <div class="page active" id="page-dash"></div>
 <div class="page" id="page-disponivel"></div>
 <div class="page" id="page-producao">
@@ -369,7 +369,7 @@ const PRODUTOS_INICIAIS=[
   {id:'p14',nome:'Docinho Romeu e Julieta',categoria:'brigadeiro',preco:5.00,validade:5,minimo:10,receitaId:'r02',desc:''},
   {id:'p15',nome:'Docinho Churros',categoria:'brigadeiro',preco:5.00,validade:5,minimo:10,receitaId:'r08',desc:''},
   {id:'p16',nome:'Docinho Coco Queimado',categoria:'brigadeiro',preco:5.00,validade:5,minimo:10,receitaId:'r04',desc:''},
-  {id:'p17',nome:'Caixinha 4 Docinhos',categoria:'brigadeiro',preco:16.00,validade:5,minimo:0,receitaId:'',desc:'Cliente escolhe os 4 sabores'},
+  {id:'p17',nome:'Caixinha 4 Docinhos',categoria:'brigadeiro',preco:18.00,validade:5,minimo:0,receitaId:'',desc:'Cliente escolhe os 4 sabores'},
   {id:'p18',nome:'Kit da Felicidade',categoria:'kit',preco:29.99,validade:5,minimo:0,receitaId:'',desc:'Mousse individual + Pudim individual + Caixinha'},
   {id:'p19',nome:'Kit Refrescante',categoria:'kit',preco:15.00,validade:7,minimo:0,receitaId:'',desc:'2 Mousses individuais'},
   {id:'p20',nome:'Kit Lar do Doce',categoria:'kit',preco:69.90,validade:5,minimo:0,receitaId:'',desc:'Pudim família + 2 mousses + Caixinha'},
@@ -377,6 +377,22 @@ const PRODUTOS_INICIAIS=[
   {id:'p22',nome:'Kit Presenteável',categoria:'kit',preco:36.00,validade:5,minimo:0,receitaId:'',desc:'Pudim individual + Mousse individual + Caixinha + Sacola presenteável'},
   {id:'p23',nome:'Dupla Perfeita',categoria:'kit',preco:24.00,validade:5,minimo:0,receitaId:'',desc:'Pudim individual + Caixinha de 4 docinhos'},
   {id:'p24',nome:'Para Toda a Família',categoria:'kit',preco:94.90,validade:7,minimo:0,receitaId:'',desc:'Mousse família (limão ou maracujá) + Pudim família'},
+  // Novos pudins individuais
+  {id:'p25',nome:'Pudim de Café Individual',categoria:'pudim',preco:12.00,validade:5,minimo:5,receitaId:'r21',desc:''},
+  {id:'p26',nome:'Pudim de Ninho Individual',categoria:'pudim',preco:12.00,validade:5,minimo:5,receitaId:'r22',desc:''},
+  {id:'p27',nome:'Pudim de Pistache Individual',categoria:'pudim',preco:12.00,validade:5,minimo:5,receitaId:'r23',desc:''},
+  // Novos pudins família
+  {id:'p28',nome:'Pudim de Café Família',categoria:'pudim',preco:59.99,validade:5,minimo:2,receitaId:'r18',desc:''},
+  {id:'p29',nome:'Pudim de Ninho Família',categoria:'pudim',preco:59.99,validade:5,minimo:2,receitaId:'r19',desc:''},
+  {id:'p30',nome:'Pudim de Pistache Família',categoria:'pudim',preco:59.99,validade:5,minimo:2,receitaId:'r20',desc:''},
+  // Mousse de morango
+  {id:'p31',nome:'Mousse de Morango Individual',categoria:'mousse',preco:10.00,validade:5,minimo:5,receitaId:'r24',desc:''},
+  {id:'p32',nome:'Mousse de Morango Família',categoria:'mousse',preco:59.99,validade:5,minimo:2,receitaId:'r25',desc:''},
+  // Docinhos novos
+  {id:'p33',nome:'Docinho Pistache',categoria:'brigadeiro',preco:5.00,validade:5,minimo:10,receitaId:'r28',desc:''},
+  {id:'p34',nome:'Docinho Morango Folhado',categoria:'brigadeiro',preco:5.00,validade:5,minimo:10,receitaId:'r27',desc:''},
+  // Kit Dia das Mães
+  {id:'p35',nome:'Kit Dia das Mães',categoria:'kit',preco:139.90,validade:5,minimo:0,receitaId:'',desc:'1 pudim família + 3 mousses individuais + 12 docinhos + sacola térmica + rosa + cartão'},
 ];
 const INGREDIENTES_INICIAIS=[
   {id:'i01',nome:'Leite Condensado',custo:6.0,custoPor:'unid',unidade:'unid',qtd:0,minimo:5},
@@ -405,17 +421,31 @@ const INGREDIENTES_INICIAIS=[
   {id:'i24',nome:'Embalagem Pudim Família',custo:7.0,custoPor:'unid',unidade:'unid',qtd:0,minimo:3},
   {id:'i25',nome:'Embalagem Mousse Individual',custo:1.0,custoPor:'unid',unidade:'unid',qtd:0,minimo:10},
   {id:'i26',nome:'Embalagem Mousse Família',custo:4.0,custoPor:'unid',unidade:'unid',qtd:0,minimo:3},
-  {id:'i27',nome:'Embalagem Kit 4 Docinhos',custo:0.65,custoPor:'unid',unidade:'unid',qtd:0,minimo:5},
+  {id:'i27',nome:'Embalagem Kit 4 Docinhos',custo:0.1198,custoPor:'unid',unidade:'unid',qtd:0,minimo:5},
   {id:'i28',nome:'Fita Decorativa',custo:0.5,custoPor:'unid',unidade:'unid',qtd:0,minimo:5},
   {id:'i29',nome:'Confete',custo:0.05333,custoPor:'g',unidade:'g',qtd:0,minimo:100},
   {id:'i30',nome:'Sacola Kit Presenteável',custo:3.5,custoPor:'unid',unidade:'unid',qtd:0,minimo:5},
+  // Novos ingredientes
+  {id:'i31',nome:'Morango',custo:0.06,custoPor:'g',unidade:'g',qtd:0,minimo:200},
+  {id:'i32',nome:'Creme de Pistache',custo:0.531,custoPor:'g',unidade:'g',qtd:0,minimo:50},
+  {id:'i33',nome:'Pistache',custo:0.45,custoPor:'g',unidade:'g',qtd:0,minimo:50},
+  {id:'i34',nome:'Café solúvel',custo:0.12,custoPor:'g',unidade:'g',qtd:0,minimo:20},
+  {id:'i35',nome:'Leite em Pó Ninho',custo:0.05,custoPor:'g',unidade:'g',qtd:0,minimo:100},
+  {id:'i36',nome:'Açúcar de Confeiteiro',custo:0.025,custoPor:'g',unidade:'g',qtd:0,minimo:100},
+  {id:'i37',nome:'Manteiga sem Sal',custo:0.06,custoPor:'g',unidade:'g',qtd:0,minimo:100},
+  {id:'i38',nome:'Farinha de Trigo',custo:0.008,custoPor:'g',unidade:'g',qtd:0,minimo:200},
+  {id:'i39',nome:'Clara de Ovo',custo:0.375,custoPor:'unid',unidade:'unid',qtd:0,minimo:4},
+  {id:'i40',nome:'Rosa (decoração)',custo:2.5,custoPor:'unid',unidade:'unid',qtd:0,minimo:5},
+  {id:'i41',nome:'Cartão (kit)',custo:1.0,custoPor:'unid',unidade:'unid',qtd:0,minimo:5},
+  {id:'i42',nome:'Sacola Térmica',custo:12.0,custoPor:'unid',unidade:'unid',qtd:0,minimo:3},
+  {id:'i43',nome:'Embalagem Pudim Individual (nova)',custo:0.1198,custoPor:'unid',unidade:'unid',qtd:0,minimo:20},
 ];
 const EMBALAGENS_INICIAIS=[
   {id:'e01',nome:'Pote Pudim Individual',qtd:0,unidade:'unid',custo:1.0,minimo:10},
   {id:'e02',nome:'Forma Pudim Família',qtd:0,unidade:'unid',custo:7.0,minimo:5},
   {id:'e03',nome:'Pote Mousse Individual',qtd:0,unidade:'unid',custo:1.0,minimo:20},
   {id:'e04',nome:'Forma Mousse Família',qtd:0,unidade:'unid',custo:4.0,minimo:3},
-  {id:'e05',nome:'Caixinha Kit 4 Docinhos',qtd:0,unidade:'unid',custo:0.65,minimo:10},
+  {id:'e05',nome:'Caixinha Kit 4 Docinhos',qtd:0,unidade:'unid',custo:0.1198,minimo:10},
   {id:'e06',nome:'Forminha Brigadeiro (1000un)',qtd:0,unidade:'unid',custo:0.035,minimo:200},
   {id:'e07',nome:'Fita Decorativa',qtd:0,unidade:'unid',custo:0.5,minimo:10},
   {id:'e08',nome:'Sacola Kit Presenteável (12un)',qtd:0,unidade:'unid',custo:3.5,minimo:5},
@@ -437,6 +467,28 @@ const RECEITAS_INICIAIS=[
   {id:'r14',nome:'Mousse de Maracujá Família',rendimento:1,rendUnidade:'unidade',ingredientes:[{ingId:'i01',qtd:2},{ingId:'i02',qtd:2},{ingId:'i10',qtd:1000},{ingId:'i16',qtd:50},{ingId:'i26',qtd:1}],modo:''},
   {id:'r15',nome:'Mousse de Limão Família',rendimento:1,rendUnidade:'unidade',ingredientes:[{ingId:'i01',qtd:2},{ingId:'i02',qtd:2},{ingId:'i09',qtd:1000},{ingId:'i16',qtd:50},{ingId:'i26',qtd:1}],modo:''},
   {id:'r16',nome:'Brigadeiro Confete',rendimento:20,rendUnidade:'docinhos',ingredientes:[{ingId:'i01',qtd:1},{ingId:'i02',qtd:1},{ingId:'i29',qtd:300},{ingId:'i21',qtd:20}],modo:''},
+  // Receita base pudim família (nova)
+  {id:'r17',nome:'Pudim Família (base nova)',rendimento:1,rendUnidade:'unidade',ingredientes:[{ingId:'i16',qtd:50},{ingId:'i01',qtd:1.5},{ingId:'i22',qtd:600},{ingId:'i18',qtd:5},{ingId:'i24',qtd:1},{ingId:'i28',qtd:1}],modo:'50g açúcar, 1,5 leite condensado, mesma medida de leite líquido, 5 ovos'},
+  // Pudim de café família
+  {id:'r18',nome:'Pudim de Café Família',rendimento:1,rendUnidade:'unidade',ingredientes:[{ingId:'i16',qtd:50},{ingId:'i01',qtd:1.5},{ingId:'i22',qtd:600},{ingId:'i18',qtd:5},{ingId:'i34',qtd:15},{ingId:'i24',qtd:1},{ingId:'i28',qtd:1}],modo:'Receita base + 15g café solúvel'},
+  // Pudim de Ninho família
+  {id:'r19',nome:'Pudim de Ninho Família',rendimento:1,rendUnidade:'unidade',ingredientes:[{ingId:'i16',qtd:50},{ingId:'i01',qtd:1.5},{ingId:'i22',qtd:600},{ingId:'i18',qtd:5},{ingId:'i35',qtd:40},{ingId:'i24',qtd:1},{ingId:'i28',qtd:1}],modo:'Receita base + 40g leite em pó ninho'},
+  // Pudim de Pistache família
+  {id:'r20',nome:'Pudim de Pistache Família',rendimento:1,rendUnidade:'unidade',ingredientes:[{ingId:'i16',qtd:50},{ingId:'i01',qtd:1.5},{ingId:'i22',qtd:600},{ingId:'i18',qtd:5},{ingId:'i32',qtd:20},{ingId:'i24',qtd:1},{ingId:'i28',qtd:1}],modo:'Receita base + 20g creme de pistache'},
+  // Pudins individuais (rendimento 6 por receita)
+  {id:'r21',nome:'Pudim de Café Individual',rendimento:6,rendUnidade:'porções',ingredientes:[{ingId:'i16',qtd:50},{ingId:'i01',qtd:1.5},{ingId:'i22',qtd:600},{ingId:'i18',qtd:5},{ingId:'i34',qtd:15},{ingId:'i23',qtd:6}],modo:''},
+  {id:'r22',nome:'Pudim de Ninho Individual',rendimento:6,rendUnidade:'porções',ingredientes:[{ingId:'i16',qtd:50},{ingId:'i01',qtd:1.5},{ingId:'i22',qtd:600},{ingId:'i18',qtd:5},{ingId:'i35',qtd:40},{ingId:'i23',qtd:6}],modo:''},
+  {id:'r23',nome:'Pudim de Pistache Individual',rendimento:6,rendUnidade:'porções',ingredientes:[{ingId:'i16',qtd:50},{ingId:'i01',qtd:1.5},{ingId:'i22',qtd:600},{ingId:'i18',qtd:5},{ingId:'i32',qtd:20},{ingId:'i23',qtd:6}],modo:''},
+  // Mousse de morango individual (rende 5)
+  {id:'r24',nome:'Mousse de Morango Individual',rendimento:5,rendUnidade:'porções',ingredientes:[{ingId:'i31',qtd:200},{ingId:'i01',qtd:1},{ingId:'i02',qtd:1},{ingId:'i09',qtd:50},{ingId:'i25',qtd:5}],modo:'200g morango, 1 leite condensado, 1 creme de leite, 1 limão'},
+  // Mousse de morango família (aproximado - rende 1)
+  {id:'r25',nome:'Mousse de Morango Família',rendimento:1,rendUnidade:'unidade',ingredientes:[{ingId:'i31',qtd:400},{ingId:'i01',qtd:2},{ingId:'i02',qtd:2},{ingId:'i09',qtd:100},{ingId:'i26',qtd:1}],modo:'Receita dobrada'},
+  // Massa folhada artesanal (rende 400g)
+  {id:'r26',nome:'Massa Folhada Artesanal',rendimento:400,rendUnidade:'g',ingredientes:[{ingId:'i39',qtd:2},{ingId:'i36',qtd:70},{ingId:'i37',qtd:70},{ingId:'i38',qtd:90},{ingId:'i11',qtd:5}],modo:'70g clara, 70g açúcar confeiteiro, 70g manteiga, 90g farinha, 5g essência'},
+  // Docinho morango folhado (rende 1 unidade)
+  {id:'r27',nome:'Docinho Morango Folhado',rendimento:1,rendUnidade:'unidade',ingredientes:[{ingId:'i01',qtd:0.05},{ingId:'i02',qtd:0.03},{ingId:'i03',qtd:30},{ingId:'i31',qtd:25}],modo:'30g ninho + 1/4 morango + 10g massa folhada'},
+  // Docinho de pistache (rende 22)
+  {id:'r28',nome:'Brigadeiro de Pistache',rendimento:22,rendUnidade:'docinhos',ingredientes:[{ingId:'i01',qtd:1},{ingId:'i02',qtd:1},{ingId:'i32',qtd:10},{ingId:'i33',qtd:30},{ingId:'i21',qtd:22}],modo:'1 leite condensado, 1 creme de leite, 10g creme pistache, 30g pistache'},
 ];
 const KIT_COMP={
   'p18':[{type:'any',grupo:['p03','p04'],qtd:1,label:'Mousse individual'},{type:'fixed',id:'p01',qtd:1,label:'Pudim Individual'},{type:'fixed',id:'p17',qtd:1,label:'Caixinha 4 Docinhos'}],
@@ -445,6 +497,12 @@ const KIT_COMP={
   'p22':[{type:'fixed',id:'p01',qtd:1,label:'Pudim Individual'},{type:'any',grupo:['p03','p04'],qtd:1,label:'Mousse individual'},{type:'fixed',id:'p17',qtd:1,label:'Caixinha 4 Docinhos'}],
   'p23':[{type:'fixed',id:'p01',qtd:1,label:'Pudim Individual'},{type:'fixed',id:'p17',qtd:1,label:'Caixinha 4 Docinhos'}],
   'p24':[{type:'any',grupo:['p05','p06'],qtd:1,label:'Mousse Família'},{type:'fixed',id:'p02',qtd:1,label:'Pudim Família'}],
+  // Kit Dia das Mães: 1 pudim família (qualquer sabor) + 3 mousses individuais + 12 docinhos + adicionais
+  'p35':[
+    {type:'any',grupo:['p02','p28','p29','p30'],qtd:1,label:'Pudim Família'},
+    {type:'any',grupo:['p03','p04','p31'],qtd:3,label:'Mousses Individuais'},
+    {type:'caixinha12',grupo:['p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p21','p33','p34'],qtd:12,label:'Docinhos (12 unid)'},
+  ],
 };
 function mergeData(db){
   const sv=db._dataVersion||0;if(sv>=DATA_VERSION)return db;
@@ -564,10 +622,16 @@ function dispProd(pid){return db.lotes.filter(l=>l.produtoId===pid).reduce((s,l)
 function calcKitMax(kitId){const comp=KIT_COMP[kitId];if(!comp)return 999;let max=9999;for(const item of comp){if(item.type==='fixed'){
     if(item.id==='p17')continue; // caixinha é virtual
     max=Math.min(max,Math.floor(dispProd(item.id)/item.qtd));
+  }else if(item.type==='caixinha12'){
+    const tot=item.grupo.reduce((s,id)=>s+dispProd(id),0);
+    max=Math.min(max,Math.floor(tot/item.qtd));
   }else{const tot=item.grupo.reduce((s,id)=>s+dispProd(id),0);max=Math.min(max,Math.floor(tot/item.qtd));}}return max===9999?0:max;}
 function calcKitFalta(kitId,qtdKits){const comp=KIT_COMP[kitId];if(!comp)return[];const falta=[];for(const item of comp){if(item.type==='fixed'){
     if(item.id==='p17')continue; // caixinha é virtual, não verifica estoque
     const d=dispProd(item.id);const n=item.qtd*qtdKits;if(d<n)falta.push({label:item.label,tem:d,precisa:n});
+  }else if(item.type==='caixinha12'){
+    const tot=item.grupo.reduce((s,id)=>s+dispProd(id),0);
+    const n=item.qtd*qtdKits;if(tot<n)falta.push({label:item.label,tem:tot,precisa:n});
   }else{const tot=item.grupo.reduce((s,id)=>s+dispProd(id),0);const n=item.qtd*qtdKits;if(tot<n)falta.push({label:item.label,tem:tot,precisa:n});}}return falta;}
 function calcDisponivelReal(pid){
   const p=db.produtos.find(x=>x.id===pid);
@@ -834,6 +898,20 @@ function renderVendaItens(){
               <span style="color:${disp>=c.qtd?'#7ABFA0':'#E07060'}"> (${disp} disp.)</span>
             </div>`;
           }
+        } else if(c.type==='caixinha12'){
+          h+=`<div style="padding:6px 0;border-bottom:1px solid var(--bord)">
+            <div style="font-size:.72rem;font-weight:700;color:var(--gold-l);margin-bottom:4px">🍬 ${c.label} — escolha os 12 sabores:</div>`;
+          for(let s=0;s<12;s++){
+            const key=`doc12_${ci}_${s}`;const cur=item.kitSel[key]||'';
+            let sopts=`<option value="">Docinho ${s+1}...</option>`;
+            c.grupo.forEach(gid=>{
+              const gp=db.produtos.find(x=>x.id===gid);
+              const disp=dispProd(gid);
+              sopts+=`<option value="${gid}" ${gid===cur?'selected':''}>${gp?.nome?.replace('Docinho ','')||gid} (${disp})</option>`;
+            });
+            h+=`<div style="margin-top:3px"><select onchange="onKitSel(${idx},'doc12_${ci}_${s}',this.value)" style="font-size:.78rem;width:100%">${sopts}</select></div>`;
+          }
+          h+=`</div>`;
         } else {
           for(let s=0;s<c.qtd;s++){
             const key=`${ci}_${s}`;
@@ -951,6 +1029,12 @@ function registrarVenda(){
             }
           } else {
             abateLotemaisAntigo(c.id,c.qtd*qtd);
+          }
+        } else if(c.type==='caixinha12'){
+          // Abate os 12 docinhos selecionados
+          for(let s=0;s<12;s++){
+            const pid=item.kitSel[`doc12_${ci}_${s}`];
+            if(pid)abateLotemaisAntigo(pid,qtd);
           }
         } else {
           for(let s=0;s<c.qtd;s++){
