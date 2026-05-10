@@ -172,7 +172,7 @@ select option{background:var(--surf2)}
 </style>
 </head>
 <body>
-<div class="header"><div class="hrow"><div class="brand"><div class="brand-ic">🍮</div><div><h1>Lar do Doce</h1><p>Gestão artesanal · v12</p></div></div><div class="sync ing" id="syncBadge">⟳ Conectando</div></div></div>
+<div class="header"><div class="hrow"><div class="brand"><div class="brand-ic">🍮</div><div><h1>Lar do Doce</h1><p>Gestão artesanal · v12b</p></div></div><div class="sync ing" id="syncBadge">⟳ Conectando</div></div></div>
 <div class="page active" id="page-dash"></div>
 <div class="page" id="page-disponivel"></div>
 <div class="page" id="page-producao">
@@ -351,7 +351,7 @@ select option{background:var(--surf2)}
   <button class="bsave" onclick="salvarPerdaD()">Registrar Perda</button>
   <button class="bcancel" onclick="closeM('mPerdaD')">Cancelar</button></div></div>
 <script>
-const DATA_VERSION=9;
+const DATA_VERSION=12;
 const PRODUTOS_INICIAIS=[
   {id:'p01',nome:'Pudim Individual',categoria:'pudim',preco:10.00,validade:5,minimo:5,receitaId:'r10',desc:''},
   {id:'p02',nome:'Pudim Família',categoria:'pudim',preco:49.90,validade:5,minimo:3,receitaId:'r11',desc:''},
@@ -1123,9 +1123,9 @@ function rDash(){
   const vM=db.vendas.filter(v=>inPeriod(v.data));
   const fM=vM.reduce((s,v)=>s+v.total,0);const fDist=db.vendasD.filter(v=>v.data?.startsWith(mes)).reduce((s,v)=>s+v.total,0);
   const cM=vM.reduce((s,v)=>s+(v.custo||0),0);const custosMes=db.custos.filter(c=>c.data&&c.data.startsWith(mes)).reduce((s,c)=>s+c.valor,0);
-  const lucro=fM+fDist-cM-custosMes;const pendPag=calcPendDistrib();const distTotal=db.enviosD.reduce((s,e)=>s+e.qtdRestante,0);
-  const perdasDPeriodo=(db.perdasD||[]).filter(p=>inPeriod(p.data)).reduce((s,p)=>s+(p.prejuizoTotal||0),0);
-  const aVal=[];db.enviosD.filter(e=>e.qtdRestante>0&&e.dataVal).forEach(e=>{const d=diasV(e.dataVal);if(d!==null&&d<=2)aVal.push({nome:e.produtoNome,dias:d,qtd:e.qtdRestante,envioId:e.id});});
+  const lucro=fM+fDist-cM-custosMes;const pendPag=0; // Distribuidora encerradaconst distTotal=0; // Distribuidora encerrada
+  const perdasDPeriodo=0; // Distribuidora encerrada
+  const aVal=[];
   // Usa lotes diretamente para alertas de estoque
   const getDispD=pid=>db.lotes.filter(l=>l.produtoId===pid).reduce((s,l)=>s+(l.qtdDisponivel||0),0);
   const aEst=[];db.produtos.forEach(p=>{
@@ -1146,19 +1146,10 @@ function rDash(){
     <div class="stat hl"><div class="si">💰</div><div class="sv">${fR(fM+fDist)}</div><div class="sl">Faturamento — ${periodoLabel}</div></div>
     <div class="stat"><div class="si">📈</div><div class="sv" style="color:${lucro>=0?'var(--cream)':'#E07060'}">${fR(lucro)}</div><div class="sl">Lucro estimado</div></div>
     <div class="stat"><div class="si">🧾</div><div class="sv" style="color:#E07060">${fR(custosMes)}</div><div class="sl">Custos do período</div></div>
-    <div class="stat"><div class="si">🗑️</div><div class="sv" style="color:#E07060">${fR(perdasDPeriodo)}</div><div class="sl">Perdas distrib.</div></div>
-    <div class="stat"><div class="si">🏪</div><div class="sv">${distTotal}</div><div class="sl">Na distribuidora</div></div>
-    <div class="stat"><div class="si">💳</div><div class="sv">${fR(pendPag)}</div><div class="sl">A receber distrib.</div></div>
+
+
   </div>`;
-  if(aVal.length){h+=`<div class="st" style="margin-bottom:7px">⚠️ Vencimentos na Distribuidora</div>`;
-    aVal.forEach(a=>{
-      const tv=tagVal(a.dias);
-      h+=`<div class="al ${a.dias<0?'red':'warn'}" style="display:flex;justify-content:space-between;align-items:center">
-        <p style="flex:1">${tv.label}: ${a.nome} · ${a.qtd} unid — ${a.dias<0?'recolher urgente':'vender ou recolher'}</p>
-        <button onclick="descartarAvisoV('${a.envioId}')" style="background:rgba(192,80,64,.2);color:#E07060;border:none;border-radius:7px;padding:4px 9px;font-size:.7rem;cursor:pointer;font-family:'Nunito',sans-serif;margin-left:8px;flex-shrink:0">✓ Resolvido</button>
-      </div>`;
-    });
-  }
+
   if(aEst.length){h+=`<div class="st" style="margin:10px 0 7px">📉 Estoque Baixo</div>`;aEst.forEach(a=>h+=`<div class="al warn"><p>${a.status==='esgotado'?'🔴 ESGOTADO':'⚠️ Baixo'}: ${a.nome}${a.qtd!==undefined?' ('+a.qtd+(a.unid?' '+a.unid:' unid')+')':''}</p></div>`);}
   const prio=db.produtos.filter(p=>p.minimo>0&&p.categoria!=='kit').map(p=>{
     const q=getDispD(p.id);const pct=p.minimo>0?(q/p.minimo)*100:100;
